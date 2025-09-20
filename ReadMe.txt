@@ -4,7 +4,10 @@ Project Overview
 ----------------
 This project addresses the binary classification of histopathology image patches to detect metastatic cancer. The dataset is a modified version of the PatchCamelyon (PCam) benchmark, provided via Kaggle. Each image is a 96×96 RGB patch labeled as either tumor (1) or normal (0).
 
-The objective is to build a robust deep learning model capable of identifying cancerous tissue, contributing to scalable diagnostic tools in digital pathology.
+
+The objective is to build a robust deep learning model capable of identifying cancerous tissue, contributing to scalable diagnostic tools in digital pathology. The data itself is quite simple with just two columns(ID and label, which is Boolean). The size of the data set is over 220,000 points for train_labels. There are roughly 270,000 photos as well.
+
+For my exploratory data analysis, I noticed that there were roughly 270,000 pictures, the train data including around 220,000 of them. Going through the data, there was little to nothing that needed to be cleaned. There were no blanks in the dataset given. I made two graphs to get a very surface level scope of what the data should potentially look like. I created a bar chart and a pie chart to get an idea of how many of each there were as well as what the approximate proportion should be while testing my model. 
 
 Repository Structure
 --------------------
@@ -48,6 +51,9 @@ Model Architectures
 - Baseline CNN: Simple 2-layer convolutional network
 - ResNet18: Pretrained residual network with modified output layer
 - EfficientNetB0: Lightweight pretrained model optimized for small patches
+
+For metastatic cancer detection using 96×96 histopathology patches and a dataset of ~270,000 labeled images, I selected a pretrained ResNet18 architecture due to its lightweight design, stable gradient flow via residual connections, and proven performance in medical imaging tasks; I replaced the final fully connected layer with a single-unit output for binary classification and fine-tuned all layers end-to-end, comparing it against EfficientNet-B0 (for its parameter efficiency and accuracy on small inputs), DenseNet121 (for its feature reuse and gradient propagation), and a custom CNN baseline; hyperparameter tuning included learning rates (1e-3 to 5e-5), batch sizes (32 to 128), optimizers (Adam vs. SGD), and schedulers (StepLR vs. CosineAnnealing), with the best configuration using Adam, batch size 64, learning rate 1e-4, and cosine annealing, yielding optimal AUC and F1 performance under strong augmentation (flip, rotate, jitter), confirming ResNet18 as the most balanced choice for speed, accuracy, and generalization.
+
 
 Results
 -------
