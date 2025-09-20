@@ -30,7 +30,7 @@ pcam-metastasis-detection/
 Setup Instructions
 ------------------
 1. Clone the repository:
-   git clone https://github.com/your-username/pcam-metastasis-detection.git
+   git clone https://github.com/crispybanjo72/histopathologic-cancer-detection.git
    cd pcam-metastasis-detection
 
 2. Install dependencies:
@@ -69,3 +69,4 @@ Leaderboard screenshot is included in leaderboard_screenshot.png.
 Author
 ------
 Carson — Run Ralphie VII Run!
+
