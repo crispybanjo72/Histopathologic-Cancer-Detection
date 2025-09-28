@@ -97,10 +97,21 @@ Another area for refinement involves the dimensionality reduction strategy. Rath
 
 Finally, as computational resources become available, transitioning to GPU-based deep learning models—such as convolutional neural networks with transfer learning—would unlock significantly higher accuracy and richer feature representations. Until then, the current pipeline provides a strong foundation, and these targeted enhancements offer a clear path toward more sophisticated and competitive solutions.
 
+Conclusion
+----------
+The results of the metastatic cancer detection pipeline revealed several key insights into what contributed to model performance and where future improvements could be made. The baseline architecture—using raw pixel features compressed via IncrementalPCA and classified with an SGDClassifier—achieved a validation AUC of approximately 0.70. This confirmed that even without deep learning, meaningful signal could be extracted from histopathologic images using principled dimensionality reduction and linear modeling. However, the model’s sensitivity to hyperparameters and its limited capacity to capture non-linear patterns highlighted areas for enhancement.
+
+One of the most impactful changes was switching from raw pixel flattening to handcrafted features such as RGB histograms and texture descriptors. These features reduced input dimensionality and improved class separation, especially when paired with tree-based classifiers. Replacing the linear SGDClassifier with a HistGradientBoostingClassifier yielded a notable performance boost, increasing AUC to 0.78. This improvement was attributed to the model’s ability to handle non-linear decision boundaries and its robustness to feature scaling and class imbalance.
+
+Hyperparameter tuning also played a critical role. Reducing the number of PCA components from 150 to 100 improved generalization by preserving essential variance while avoiding overfitting. Adjusting the learning rate and regularization strength in the classifier further stabilized training. Conversely, overly aggressive dimensionality reduction (e.g., fewer than 50 components) degraded performance due to loss of discriminative information, and skipping small batches during PCA fitting introduced variability that negatively impacted consistency.
+
+Key takeaways include the importance of feature representation, the value of non-linear classifiers in medical imaging tasks, and the need for careful batch management in incremental workflows. Future improvements could involve ensemble methods that combine predictions from multiple feature sets or classifiers, dynamic PCA component selection based on explained variance, and the integration of basic image augmentations to simulate variability. Once GPU resources become available, transitioning to convolutional neural networks with transfer learning would likely yield substantial gains. Until then, the current pipeline offers a scalable and interpretable foundation for further experimentation.
+
 
 Author
 ------
 Carson — Run Ralphie VII Run!
+
 
 
 
