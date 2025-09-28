@@ -54,6 +54,14 @@ Model Architectures
 
 For metastatic cancer detection using 96×96 histopathology patches and a dataset of ~270,000 labeled images, I selected a pretrained ResNet18 architecture due to its lightweight design, stable gradient flow via residual connections, and proven performance in medical imaging tasks; I replaced the final fully connected layer with a single-unit output for binary classification and fine-tuned all layers end-to-end, comparing it against EfficientNet-B0 (for its parameter efficiency and accuracy on small inputs), DenseNet121 (for its feature reuse and gradient propagation), and a custom CNN baseline; hyperparameter tuning included learning rates (1e-3 to 5e-5), batch sizes (32 to 128), optimizers (Adam vs. SGD), and schedulers (StepLR vs. CosineAnnealing), with the best configuration using Adam, batch size 64, learning rate 1e-4, and cosine annealing, yielding optimal AUC and F1 performance under strong augmentation (flip, rotate, jitter), confirming ResNet18 as the most balanced choice for speed, accuracy, and generalization.
 
+Model Description
+-----------------
+This model addresses the challenge of binary classification in histopathologic cancer detection using a fully CPU-compatible pipeline tailored for the Kaggle competition. It operates without deep learning frameworks, relying instead on scalable, interpretable methods that are well-suited for environments with limited computational resources. Each image in the dataset is a high-resolution `.tif` file representing tissue samples, which are resized to 96×96 pixels and flattened into 27,648-dimensional feature vectors. To reduce the computational burden and mitigate memory constraints, the model applies incremental Principal Component Analysis (IncrementalPCA), compressing the feature space to 150 components. This dimensionality reduction is performed in batches, with undersized batches skipped to satisfy PCA constraints.
+
+Following feature compression, the model trains an `SGDClassifier` using logistic loss, also in an incremental fashion. This approach enables efficient learning from large datasets without requiring the entire training set to reside in memory. The classifier outputs probabilistic predictions, which are evaluated using the area under the ROC curve (AUC), achieving a validation score of approximately 0.70. For inference, the model processes each test image individually, applies the trained PCA transformation, and predicts the likelihood of metastatic cancer. Predictions are saved in a submission file for Kaggle evaluation, and a secondary output file is generated containing only the test samples classified as non-metastatic (label = 0), with headers `ID` and `Label`.
+
+Overall, this model balances simplicity, scalability, and performance, making it a practical baseline for further experimentation. It can be extended with handcrafted features such as color histograms or texture descriptors, or upgraded to more powerful classifiers like gradient boosting, once GPU resources become available.
+
 
 Results
 -------
@@ -69,4 +77,5 @@ Leaderboard screenshot is included in leaderboard_screenshot.png.
 Author
 ------
 Carson — Run Ralphie VII Run!
+
 
